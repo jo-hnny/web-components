@@ -1,0 +1,1 @@
+{"mappings":"SAAS,IAAI,GAAG,CAAC;IACf,KAAK,CAAC,CAAe;AACvB,CAAC;AAED,MAAM,CAAC,MAAM,GAAG,IAAI","sources":["src/index.ts"],"sourcesContent":["function main() {\n  alert(\"Hello, world!\");\n}\n\nwindow.onload = main;\n"],"names":[],"version":3,"file":"index.fb5312c9.js.map","sourceRoot":"/__parcel_source_root/"}

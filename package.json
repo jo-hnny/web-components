@@ -1,0 +1,24 @@
+{
+  "name": "web-components",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jo-hnny/web-components.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jo-hnny/web-components/issues"
+  },
+  "homepage": "https://github.com/jo-hnny/web-components#readme",
+  "devDependencies": {
+    "@parcel/transformer-inline-string": "^2.0.1",
+    "parcel": "^2.0.1"
+  }
+}
