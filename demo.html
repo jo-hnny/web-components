@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <template id="jo-button">
+      <style>
+        .button {
+          display: inline-block;
+          line-height: 30px;
+          height: 30px;
+          padding: 0 20px;
+          font-size: 12px;
+          cursor: pointer;
+          border-width: 1px;
+          border-style: solid;
+        }
+
+        .button.is-disabled {
+          border-color: #aacfff;
+          background-color: #aacfff;
+          color: #fff;
+        }
+
+        .weak {
+          background-color: #fff;
+          border-color: #cfd5de;
+          color: #006eff;
+        }
+
+        .primary {
+          color: #fff;
+          border: 1px solid #006eff;
+          background-color: #006eff;
+        }
+
+        .link {
+          display: inline-block;
+          text-align: center;
+          height: auto;
+          padding: 0;
+          vertical-align: middle;
+          line-height: 1.5;
+          border: none;
+          color: #006eff;
+        }
+      </style>
+      <div class="button weak">
+        <slot></slot>
+      </div>
+    </template>
+
+    <script>
+      class JoButton extends HTMLElement {
+        static get observedAttributes() {
+          return ["disabled", "type"];
+        }
+
+        static get typeEnum() {
+          return {
+            primary: "primary",
+            link: "link",
+            weak: "weak",
+          };
+        }
+
+        constructor() {
+          super();
+
+          this._shadowRoot = this.attachShadow({ mode: "open" });
+
+          this.shadowRoot.appendChild(
+            document.getElementById("jo-button").content.cloneNode(true)
+          );
+
+          this.initEvent();
+        }
+
+        initEvent() {
+          let clickCount = 0;
+
+          this.addEventListener("click", (e) => {
+            if (this.disabled) return;
+
+            this.dispatchEvent(
+              new CustomEvent("onClick", {
+                detail: { count: ++clickCount },
+              })
+            );
+          });
+        }
+
+        connectedCallback() {}
+
+        attributeChangedCallback(name, oldValue, newValue) {
+          console.log("attributesChangedCallback", name, oldValue, newValue);
+          switch (name) {
+            case "disabled":
+              this.shadowRoot
+                .querySelector(".button")
+                .classList.toggle("is-disabled", this.disabled);
+              break;
+            case "type":
+              this.shadowRoot
+                .querySelector(".button")
+                .classList.replace(oldValue || "weak", newValue);
+          }
+        }
+
+        get disabled() {
+          return this.hasAttribute("disabled");
+        }
+
+        set disabled(value) {
+          if (value) {
+            this.setAttribute("disabled", "");
+          } else {
+            this.removeAttribute("disabled");
+          }
+        }
+
+        get type() {
+          return this.getAttribute("type") || "weak";
+        }
+
+        set type(value) {
+          if (JoButton.typeEnum[value]) {
+            this.setAttribute("type", value);
+          }
+        }
+      }
+
+      window.customElements.define("jo-button", JoButton);
+    </script>
+
+    <jo-button>确认</jo-button>
+
+    <section style="margin-top: 20px">
+      <div>
+        <label for="disabled-checkbox">disabled</label>
+        <input id="disabled-checkbox" type="checkbox" />
+      </div>
+
+      <p>please check type</p>
+
+      <div>
+        <label for="type-primary">primary</label>
+        <input id="type-primary" type="radio" name="type" value="primary" />
+
+        <label for="type-weak">weak</label>
+        <input id="type-weak" type="radio" name="type" value="weak" />
+
+        <label for="type-link">link</label>
+        <input id="type-link" type="radio" name="type" value="link" />
+      </div>
+    </section>
+
+    <script>
+      const joButton = document.querySelector("jo-button");
+      joButton.addEventListener("onClick", (e) => {
+        alert(e.detail.count);
+      });
+
+      const disabledCheckbox = document.querySelector("#disabled-checkbox");
+      disabledCheckbox.addEventListener("change", () => {
+        joButton.disabled = disabledCheckbox.checked;
+      });
+
+      const typeRadios = document.querySelectorAll("input[name=type]");
+
+      typeRadios.forEach((radio) =>
+        radio.addEventListener("change", (e) => {
+          joButton.type = e.target.value;
+        })
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <template id="jo-button">
+      <style>
+        .button {
+          display: inline-block;
+          line-height: 30px;
+          height: 30px;
+          padding: 0 20px;
+          font-size: 12px;
+          cursor: pointer;
+          border-width: 1px;
+          border-style: solid;
+          user-select: none;
+        }
+
+        .weak {
+          background-color: #fff;
+          border-color: #cfd5de;
+          color: #006eff;
+        }
+
+        :host([disabled]) .button {
+          border-color: #aacfff;
+          background-color: #aacfff;
+          color: #fff;
+        }
+      </style>
+      <div class="button weak">
+        <slot></slot>
+      </div>
+    </template>
+
+    <script>
+      class JoButton extends HTMLElement {
+        static get observedAttributes() {
+          return ["disabled", "type"];
+        }
+
+        constructor() {
+          super();
+
+          // const shadowRoot = this.attachShadow({ mode: "open" });
+
+          this.appendChild(
+            document.getElementById("jo-button").content.cloneNode(true)
+          );
+
+          this.initEvent();
+        }
+
+        initEvent() {
+          let clickCount = 0;
+
+          this.addEventListener("click", () => {
+            if (this.disabled) return;
+
+            this.dispatchEvent(
+              new CustomEvent("onClick", { detail: { count: ++clickCount } })
+            );
+          });
+        }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+          switch (name) {
+            case "disabled":
+              this.shadowRoot
+                .querySelector(".button")
+                .classList.toggle("is-disabled", this.disabled);
+              break;
+          }
+        }
+
+        get disabled() {
+          return this.hasAttribute("disabled");
+        }
+
+        set disabled(value) {
+          if (value) {
+            this.setAttribute("disabled", "");
+          } else {
+            this.removeAttribute("disabled");
+          }
+        }
+      }
+
+      window.customElements.define("jo-button", JoButton);
+    </script>
+
+    <jo-button disabled>取消</jo-button>
+
+    <video controls></video>
+    <input type="range" />
+    <time-ago></time-ago>
+
+    <script>
+      const button = document.querySelector("jo-button");
+      button.addEventListener("onClick", (e) => {
+        console.log(e.detail.count);
+      });
+    </script>
+  </body>
+</html>
