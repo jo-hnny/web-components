@@ -153,7 +153,7 @@ window.customElements.define("jo-button", JoButton);
 
 ## js
 
-```js {monaco} {height:'300px',}
+```js
 class JoButton extends HTMLElement {
   static get observedAttributes() {
     return ["disabled", "type"];
@@ -319,8 +319,8 @@ class JoButton extends HTMLElement {
 
 # 参考资料
 
-[Web Components 入门实例教程](https://www.ruanyifeng.com/blog/2019/08/web_components.html)
-[Web Components Tutorial for Beginners](https://www.robinwieruch.de/web-components-tutorial/)
-[Custom Elements v1: Reusable Web Components](https://developers.google.com/web/fundamentals/web-components/customelements)
-[Web Components - MDN ](https://developer.mozilla.org/zh-CN/docs/Web/Web_Components)
-[Web Components 在 GitHub 中的应用](https://zhuanlan.zhihu.com/p/19864255)
+- [Web Components 入门实例教程](https://www.ruanyifeng.com/blog/2019/08/web_components.html)
+- [Web Components Tutorial for Beginners](https://www.robinwieruch.de/web-components-tutorial/)
+- [Custom Elements v1: Reusable Web Components](https://developers.google.com/web/fundamentals/web-components/customelements)
+- [Web Components - MDN ](https://developer.mozilla.org/zh-CN/docs/Web/Web_Components)
+- [Web Components 在 GitHub 中的应用](https://zhuanlan.zhihu.com/p/19864255)
